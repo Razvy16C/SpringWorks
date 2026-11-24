@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atelier de Suspensii</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/stil.css">
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="marca">Atelier<i>.</i> <span>Suspensii</span></div>
+    <div class="grup">
+      <button id="btnPlay" class="principal">▶ Simulează</button>
+      <button id="btnUndo" title="Ctrl+Z">Anulează</button>
+      <button id="btnSalveaza">Salvează</button>
+      <button id="btnIncarca">Încarcă</button>
+      <button id="btnExemplu">Mașina exemplu</button>
+      <button id="btnGoleste">Golește piesele</button>
+    </div>
+  </header>
+
+  <aside id="inventar">
+    <h2>Inventar</h2>
+    <p class="nota">Apasă sau trage o piesă în scenă.</p>
+    <div id="listaInventar"></div>
+  </aside>
+
+  <main>
+    <div id="unelte" class="grup">
+      <button data-unealta="muta" title="1">Mută</button>
+      <button data-unealta="leaga" title="2">Leagă</button>
+      <button data-unealta="teren" title="3">Teren</button>
+      <select id="tipPrindere" hidden aria-label="Tip prindere">
+        <option value="rigid">Prindere rigidă</option>
+        <option value="pivot">Prindere cu pivot</option>
+      </select>
+      <select id="pensula" hidden aria-label="Pensulă teren">
+        <option value="ridica">Ridică</option>
+        <option value="coboara">Coboară</option>
+        <option value="netezeste">Netezește</option>
+        <option value="niveleaza">Nivelează</option>
+        <option value="deseneaza">Desenează platformă</option>
+        <option value="sterge">Șterge platformă</option>
+      </select>
+      <label id="marimeLabel" hidden>Pensulă <input id="marime" type="range" min="1" max="10" step="0.5" value="3"></label>
+      <button id="btnTerenPlat" hidden>Teren plat</button>
+    </div>
+    <div id="scena">
+      <canvas id="panza" aria-label="Scena jocului"></canvas>
+      <div id="indiciu" role="status"></div>
+      <div id="condus" hidden>
+        <button id="inapoi" aria-label="Înapoi">◀</button>
+        <button id="inainte" aria-label="Înainte">▶</button>
+      </div>
+      <div id="vedere" class="grup">
+        <button id="btnPlus" aria-label="Mărește">+</button>
+        <button id="btnMinus" aria-label="Micșorează">−</button>
+        <button id="btnCentru">Centrează</button>
+      </div>
+    </div>
+  </main>
+
+  <aside id="proprietati">
+    <div id="panou"></div>
+    <section>
+      <h2>Lumea</h2>
+      <label class="camp">Gravitație
+        <select id="gravitatie">
+          <option value="9.81">Pământ · 9,81 m/s²</option>
+          <option value="1.62">Lună · 1,62 m/s²</option>
+          <option value="3.72">Marte · 3,72 m/s²</option>
+          <option value="24.79">Jupiter · 24,79 m/s²</option>
+          <option value="0">Imponderabilitate</option>
+        </select>
+      </label>
+      <label class="camp">Frecarea terenului <output id="frecareTerenV"></output>
+        <input id="frecareTeren" type="range" min="0" max="2" step="0.05">
+      </label>
+      <label class="bifa"><input id="urmareste" type="checkbox" checked> Camera urmărește piesa selectată</label>
+    </section>
+  </aside>
+</div>
+<script src="vendor/planck.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/model.js"></script>
+<script src="js/teren.js"></script>
+<script src="js/fizica.js"></script>
+<script src="js/randare.js"></script>
+<script src="js/interfata.js"></script>
+<script src="js/interactiune.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
