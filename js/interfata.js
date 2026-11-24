@@ -10,16 +10,27 @@
     teren: 'Ține apăsat și trage pentru a modela. Rotița mărește, butonul din dreapta mută vederea.',
     sim: 'Trage piesele ca să le arunci. ← → conduc roțile. Spațiu oprește și revine la construcție.'
   };
+  const INDICII_TACTIL = {
+    muta: 'Trage piesele cu degetul. Cu al doilea deget o rotești pe cea ținută.',
+    leaga: 'Atinge punctul piesei care se mută, apoi destinația.',
+    teren: 'Trage ca să modelezi. Două degete mută și măresc vederea.',
+    sim: 'Ține ◀ ▶ ca să conduci. Trage piesele ca să le arunci.'
+  };
   let cronometru;
   S.indiciu = text => {
     clearTimeout(cronometru);
-    $('indiciu').textContent = text || INDICII[S.sim ? 'sim' : S.ui.unealta];
+    const mod = S.sim ? 'sim' : S.ui.unealta;
+    if (S.tactil && text) text = text.replace('Esc renunță.', 'Apasă din nou „Leagă” ca să renunți.').replace('Apasă destinația', 'Atinge destinația');
+    $('indiciu').textContent = text || (S.tactil ? INDICII_TACTIL : INDICII)[mod];
+    // pe ecrane mici indiciul dispare singur, ca să nu acopere scena
     if (text) cronometru = setTimeout(() => S.indiciu(), 4000);
+    else if (S.tactil) cronometru = setTimeout(() => { $('indiciu').textContent = ''; }, 6000);
   };
 
   S.unealta = nume => {
     Object.assign(S.ui, { unealta: nume, primul: null, tinta: null, desen: null });
     document.querySelectorAll('[data-unealta]').forEach(b => b.classList.toggle('activ', b.dataset.unealta === nume));
+    if (S.barăActiuni) S.barăActiuni();
     $('tipPrindere').hidden = nume !== 'leaga';
     for (const id of ['pensula', 'marimeLabel', 'btnTerenPlat']) $(id).hidden = nume !== 'teren';
     S.indiciu();
@@ -29,6 +40,7 @@
 
   S.selecteaza = id => {
     S.ui.selectat = id;
+    if (S.barăActiuni) S.barăActiuni();
     if (S.sim) S.sim.istoric = [];
     S.panou();
   };
@@ -58,7 +70,7 @@
     }
     const alege = (eticheta, html) => adauga(`<label class="camp">${eticheta}${html}</label>`);
     if (p.tip === 'roata') {
-      const sel = alege('Motor', '<select id="motor"><option value="taste">Comandat cu ← →</option><option value="constant">Mereu pornit</option><option value="liber">Roată liberă</option></select>').querySelector('select');
+      const sel = alege('Motor', '<select id="motor"><option value="taste">Condus de tine</option><option value="constant">Mereu pornit</option><option value="liber">Roată liberă</option></select>').querySelector('select');
       sel.value = p.motor; sel.disabled = !!S.sim;
       sel.onchange = () => { S.memoreaza(); S.piesa(p.id).motor = sel.value; S.salveaza(); };
       adauga('<p class="nota">Motorul acționează doar dacă roata e prinsă de ceva.</p>');
@@ -89,6 +101,7 @@
     const p = S.piesa(S.ui.selectat);
     if (!p || S.sim) return;
     S.memoreaza();
+    S.sunet.efect({ copiaza: 'pune', desprinde: 'desprinde', sterge: 'sterge' }[nume]);
     if (nume === 'rotesteStanga' || nume === 'rotesteDreapta') {
       const grup = S.ansamblu(p.id);
       S.desprindeDeTeren(grup);
@@ -114,14 +127,18 @@
 
   S.comutaSim = () => {
     if (S.sim) S.opreste(); else S.porneste();
+    S.picteaza = false;
+    S.sunet.efect(S.sim ? 'start' : 'stop');
     S.ui.primul = null;
     S.directie = 0;
     const b = $('btnPlay');
     b.textContent = S.sim ? '■ Oprește' : '▶ Simulează';
     b.classList.toggle('rulare', !!S.sim);
     $('condus').hidden = !S.sim;
-    document.querySelectorAll('#unelte button, #unelte select, .piesa, #btnUndo, #btnIncarca, #btnExemplu, #btnGoleste, #gravitatie, #frecareTeren').forEach(e => e.disabled = !!S.sim);
+    document.querySelectorAll('#unelte button, #unelte select, .piesa, #bara [data-unealta], #btnPiese, #btnUndo, #btnIncarca, #btnExemplu, #btnGoleste, #gravitatie, #frecareTeren').forEach(e => e.disabled = !!S.sim);
     S.panou();
+    S.foaie('');
+    S.barăActiuni();
     S.indiciu();
   };
 })();

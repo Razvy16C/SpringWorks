@@ -7,6 +7,7 @@
     const world = planck.World({ gravity: V(0, -S.stare.gravitatie), allowSleep: false });
     const sol = world.createBody();
     const frec = { friction: S.stare.frecareTeren };
+    S.sunet.asculta(world);
     const { X0, PAS, X1 } = S.TEREN;
     sol.createFixture(planck.Chain(S.stare.teren.map((y, i) => V(X0 + i * PAS, y)), false), frec);
     sol.createFixture(planck.Edge(V(X0, -20), V(X0, 60)), frec);

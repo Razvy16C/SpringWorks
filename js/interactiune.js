@@ -2,7 +2,7 @@
 (() => {
   const $ = S.$, cv = S.panza, ui = S.ui;
   const degete = new Map();
-  let gest = null, ciupire = 0;
+  let gest = null, ciupire = null;
   S.directie = 0;
 
   const local = e => { const r = cv.getBoundingClientRect(); return { sx: e.clientX - r.left, sy: e.clientY - r.top }; };
@@ -10,7 +10,7 @@
 
   // Piesa (și partea ei) aflată sub un punct.
   function sub(w) {
-    const toleranta = 6 / S.cam.z;
+    const toleranta = (S.tactil ? 14 : 6) / S.cam.z;
     const ordine = ['roata', 'bloc', 'susp'].flatMap(t => S.stare.piese.filter(p => p.tip === t).reverse());
     for (const p of ordine) for (const i of S.parti(p)) {
       const q = S.poza(p, i), l = S.rot(w.x - q.x, w.y - q.y, -q.a);
@@ -18,13 +18,13 @@
       const hw = (p.tip === 'bloc' ? p.w : S.PLACA.w) / 2, hh = (p.tip === 'bloc' ? p.h : S.PLACA.h) / 2;
       if (Math.abs(l.x) <= hw + toleranta && Math.abs(l.y) <= hh + toleranta) return { p, i };
     }
-    for (const p of ordine) if (p.tip === 'susp' && S.distSegment(w, S.poza(p, 0), S.poza(p, 1)) < 0.25) return { p, i: 1 };
+    for (const p of ordine) if (p.tip === 'susp' && S.distSegment(w, S.poza(p, 0), S.poza(p, 1)) < Math.max(0.25, toleranta)) return { p, i: 1 };
     return null;
   }
 
   // Ținta uneltei "Leagă": punct de prindere apropiat, apoi piesa, apoi terenul.
   function tintaLegare(w) {
-    const prag = 14 / S.cam.z;
+    const prag = (S.tactil ? 26 : 14) / S.cam.z;
     let best = null, d = prag;
     const exclus = ui.primul ? ui.primul.id : null;
     for (const p of S.stare.piese) {
@@ -56,12 +56,18 @@
     const eroare = S.leaga(ui.primul, t.ancora, $('tipPrindere').value);
     ui.primul = null;
     S.indiciu(eroare || 'Prins.');
+    S.sunet.efect(eroare ? 'eroare' : 'prinde');
     S.salveaza();
   }
 
   function stergePlatforma(w) {
     S.stare.platforme = S.stare.platforme.filter(pl => !pl.some((q, i) => i && S.distSegment(w, pl[i - 1], q) < 12 / S.cam.z));
   }
+
+  const doua = () => {
+    const [a, b] = [...degete.values()];
+    return { sx: (a.sx + b.sx) / 2, sy: (a.sy + b.sy) / 2, d: Math.hypot(a.sx - b.sx, a.sy - b.sy), unghi: Math.atan2(b.sy - a.sy, b.sx - a.sx) };
+  };
 
   function zoom(factor, sx = cv.clientWidth / 2, sy = cv.clientHeight / 2) {
     const inainte = S.laLume(sx, sy);
@@ -73,16 +79,18 @@
   cv.addEventListener('pointerdown', e => {
     cv.setPointerCapture(e.pointerId);
     degete.set(e.pointerId, local(e));
-    if (degete.size === 2) { // două degete: zoom
-      const [a, b] = [...degete.values()];
-      ciupire = Math.hypot(a.sx - b.sx, a.sy - b.sy);
-      S.elibereaza(); gest = null; ui.desen = null;
+    if (degete.size === 2) {
+      ciupire = doua();
+      // cu o piesă ținută, al doilea deget o rotește; altfel mută și mărește vederea
+      if (gest && gest.tip === 'muta') gest.tip = 'rotire';
+      else { S.elibereaza(); gest = null; ui.desen = null; }
       return;
     }
+    if (degete.size > 2) return;
     const w = lume(e), pan = { tip: 'pan', ...local(e) };
     if (e.button === 1 || e.button === 2) { gest = pan; return; }
     if (!S.sim && ui.unealta === 'leaga') {
-      if (tintaLegare(w)) clicLegare(w); else gest = pan;
+      gest = { tip: 'atingere', ...local(e) }; // se leagă la ridicare, dacă nu s-a tras
       return;
     }
     if (!S.sim && ui.unealta === 'teren') {
@@ -104,14 +112,26 @@
     const w = lume(e);
     ui.cursor = w;
     if (degete.has(e.pointerId)) degete.set(e.pointerId, local(e));
-    if (degete.size === 2) {
-      const [a, b] = [...degete.values()], d = Math.hypot(a.sx - b.sx, a.sy - b.sy);
-      if (ciupire) zoom(d / ciupire, (a.sx + b.sx) / 2, (a.sy + b.sy) / 2);
-      ciupire = d;
+    if (degete.size >= 2) {
+      const acum = doua(), vechi = ciupire || acum;
+      ciupire = acum;
+      if (gest && gest.tip === 'rotire') {
+        const p = S.piesa(gest.id);
+        let d = acum.unghi - vechi.unghi;
+        d = Math.atan2(Math.sin(d), Math.cos(d));
+        S.roteste(S.ansamblu(p.id), p.x, p.y, -d);
+      } else {
+        S.cam.x -= (acum.sx - vechi.sx) / S.cam.z; S.cam.y += (acum.sy - vechi.sy) / S.cam.z;
+        if (vechi.d) zoom(acum.d / vechi.d, acum.sx, acum.sy);
+      }
       return;
     }
     ui.tinta = !S.sim && ui.unealta === 'leaga' ? tintaLegare(w) : null;
     if (!gest) return;
+    if (gest.tip === 'atingere') {
+      const { sx, sy } = local(e);
+      if (Math.hypot(sx - gest.sx, sy - gest.sy) > 10) gest.tip = 'pan';
+    }
     if (gest.tip === 'pan') {
       const { sx, sy } = local(e);
       S.cam.x -= (sx - gest.sx) / S.cam.z; S.cam.y += (sy - gest.sy) / S.cam.z;
@@ -132,7 +152,8 @@
 
   const termina = e => {
     degete.delete(e.pointerId);
-    ciupire = 0;
+    ciupire = null;
+    if (gest && gest.tip === 'atingere' && e.type === 'pointerup') clicLegare(lume(e));
     if (ui.desen && ui.desen.length > 1) S.stare.platforme.push(ui.desen);
     ui.desen = null;
     S.elibereaza();
@@ -157,6 +178,7 @@
 
   // Apelat la fiecare cadru: pensula lucrează cât timp e apăsată.
   S.gestContinuu = dt => {
+    S.picteaza = !!(gest && gest.tip === 'pensula');
     if (gest && gest.tip === 'pensula' && ui.cursor) S.pensuleaza(ui.pensula, ui.cursor.x, ui.raza, dt, gest.nivel);
   };
   S.seTrage = () => !!gest;

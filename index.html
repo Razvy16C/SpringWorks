@@ -14,14 +14,19 @@
     <div class="grup">
       <button id="btnPlay" class="principal">▶ Simulează</button>
       <button id="btnUndo" title="Ctrl+Z">Anulează</button>
+      <button id="btnMeniu" class="doar-tactil" aria-label="Meniu">☰ Meniu</button>
+      <div id="meniu">
       <button id="btnSalveaza">Salvează</button>
       <button id="btnIncarca">Încarcă</button>
       <button id="btnExemplu">Mașina exemplu</button>
       <button id="btnGoleste">Golește piesele</button>
+      <button id="btnSunet"></button>
+      </div>
     </div>
   </header>
 
   <aside id="inventar">
+    <button class="inchide doar-tactil">Închide</button>
     <h2>Inventar</h2>
     <p class="nota">Apasă sau trage o piesă în scenă.</p>
     <div id="listaInventar"></div>
@@ -50,6 +55,14 @@
     <div id="scena">
       <canvas id="panza" aria-label="Scena jocului"></canvas>
       <div id="indiciu" role="status"></div>
+      <div id="actiuni" class="doar-tactil" hidden>
+        <button data-actiune="rotesteStanga" aria-label="Rotește la stânga">↺<small>Rotește</small></button>
+        <button data-actiune="rotesteDreapta" aria-label="Rotește la dreapta">↻<small>Rotește</small></button>
+        <button data-actiune="copiaza">⧉<small>Copiază</small></button>
+        <button data-actiune="desprinde">✂<small>Desprinde</small></button>
+        <button data-actiune="sterge">✕<small>Șterge</small></button>
+        <button id="btnReglaje">⚙<small>Reglează</small></button>
+      </div>
       <div id="condus" hidden>
         <button id="inapoi" aria-label="Înapoi">◀</button>
         <button id="inainte" aria-label="Înainte">▶</button>
@@ -62,7 +75,16 @@
     </div>
   </main>
 
+  <nav id="bara" class="doar-tactil" aria-label="Unelte">
+    <button data-unealta="muta">✥<small>Mută</small></button>
+    <button data-unealta="leaga">⚭<small>Leagă</small></button>
+    <button data-unealta="teren">⛰<small>Teren</small></button>
+    <button id="btnPiese">＋<small>Piese</small></button>
+    <button id="btnLume">⚙<small>Reglaje</small></button>
+  </nav>
+
   <aside id="proprietati">
+    <button class="inchide doar-tactil">Închide</button>
     <div id="panou"></div>
     <section>
       <h2>Lumea</h2>
@@ -78,6 +100,9 @@
       <label class="camp">Frecarea terenului <output id="frecareTerenV"></output>
         <input id="frecareTeren" type="range" min="0" max="2" step="0.05">
       </label>
+      <label class="camp">Volum sunete
+        <input id="volum" type="range" min="0" max="1" step="0.05">
+      </label>
       <label class="bifa"><input id="urmareste" type="checkbox" checked> Camera urmărește piesa selectată</label>
     </section>
   </aside>
@@ -90,6 +115,8 @@
 <script src="js/randare.js"></script>
 <script src="js/interfata.js"></script>
 <script src="js/interactiune.js"></script>
+<script src="js/sunet.js"></script>
+<script src="js/tactil.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@ S.INVENTAR = [
   { nume: 'Standard', info: '2500 N/m', date: { tip: 'susp', L: 1.2, k: 2500, c: 220, masa: 6 } },
   { nume: 'Tare', info: '8000 N/m', date: { tip: 'susp', L: 1, k: 8000, c: 600, masa: 8 } },
   { grup: 'Roți' },
-  { nume: 'Roată', info: 'cu motor pe ← →', date: { tip: 'roata', r: 0.55, masa: 8, frecare: 1.2, motor: 'taste', viteza: 9, cuplu: 130 } }
+  { nume: 'Roată', info: 'motor condus de tine', date: { tip: 'roata', r: 0.55, masa: 8, frecare: 1.2, motor: 'taste', viteza: 9, cuplu: 130 } }
 ];
 
 // [cheie, etichetă, min, max, pas, unitate]

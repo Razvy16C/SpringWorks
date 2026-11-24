@@ -9,6 +9,8 @@
     S.selecteaza(p.id);
     S.unealta('muta');
     S.salveaza();
+    S.sunet.efect('pune');
+    S.foaie('');
   }
   for (const it of S.INVENTAR) {
     if (it.grup) { $('listaInventar').insertAdjacentHTML('beforeend', `<h3 style="grid-column:1/-1">${it.grup}</h3>`); continue; }
@@ -16,10 +18,10 @@
     b.className = 'piesa';
     b.innerHTML = `${it.nume}<small>${it.info}</small>`;
     let tras = false;
-    b.addEventListener('pointerdown', e => { tras = false; b.setPointerCapture(e.pointerId); });
+    b.addEventListener('pointerdown', e => { tras = false; if (!S.tactil) b.setPointerCapture(e.pointerId); });
     b.addEventListener('pointerup', e => {
       const r = S.panza.getBoundingClientRect();
-      if (!S.sim && e.clientX > r.left && e.clientX < r.right && e.clientY > r.top && e.clientY < r.bottom) {
+      if (!S.tactil && !S.sim && e.clientX > r.left && e.clientX < r.right && e.clientY > r.top && e.clientY < r.bottom) {
         tras = true;
         pune(it.date, S.laLume(e.clientX - r.left, e.clientY - r.top));
       }
@@ -44,8 +46,8 @@
   };
   const arataExemplu = () => {
     const sasiu = S.masinaExemplu();
-    S.cam.x = sasiu.x + 4; S.cam.y = sasiu.y;
-    S.cam.z = Math.max(18, Math.min(48, S.panza.clientWidth / 20));
+    S.cam.x = sasiu.x + (S.panza.clientWidth < 600 ? 0 : 4); S.cam.y = sasiu.y;
+    S.cam.z = Math.max(S.tactil ? 28 : 18, Math.min(48, S.panza.clientWidth / 20));
     S.selecteaza(S.stare.piese.find(p => p.tip === 'susp').id);
   };
   $('btnExemplu').onclick = () => { S.memoreaza(); arataExemplu(); S.salveaza(); };
@@ -57,6 +59,14 @@
   $('gravitatie').onchange = e => { S.memoreaza(); S.stare.gravitatie = Number(e.target.value); S.salveaza(); };
   $('frecareTeren').oninput = e => { S.stare.frecareTeren = Number(e.target.value); S.lume(); S.salveaza(); };
 
+  const butonSunet = () => { $('btnSunet').textContent = S.sunet.setari.activ ? '🔊 Sunet' : '🔇 Mut'; };
+  $('btnSunet').onclick = () => { S.sunet.comuta(); butonSunet(); };
+  $('volum').value = S.sunet.setari.volum;
+  $('volum').oninput = e => S.sunet.volum(Number(e.target.value));
+  $('volum').onchange = () => S.sunet.efect('pune');
+  butonSunet();
+
+  S.detecteaza();
   if (S.incarca()) {
     const p = S.stare.piese[0];
     if (p) { S.cam.x = p.x; S.cam.y = p.y; }
@@ -75,8 +85,10 @@
     if (S.sim) {
       S.avanseaza(dt, S.directie, ui.selectat);
       const p = S.piesa(ui.selectat);
-      if (p && $('urmareste').checked && !S.seTrage()) {
-        const q = S.poza(p, 0), f = Math.min(1, dt * 4);
+      // fără selecție, camera urmărește o roată cât timp conduci
+      const tinta = p || (S.directie && S.stare.piese.find(x => x.tip === 'roata' && x.motor === 'taste'));
+      if (tinta && $('urmareste').checked && !S.seTrage()) {
+        const q = S.poza(tinta, 0), f = Math.min(1, dt * 4);
         S.cam.x += (q.x - S.cam.x) * f; S.cam.y += (q.y - S.cam.y) * f;
       }
       if (p && p.tip === 'susp' && $('lungimeAcum')) {
@@ -86,6 +98,7 @@
         S.grafic();
       }
     } else S.gestContinuu(dt);
+    S.sunet.cadru(dt);
     S.deseneaza(ui);
     requestAnimationFrame(cadru);
   }

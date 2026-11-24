@@ -41,10 +41,52 @@ input[type=range]{accent-color:var(--accent)}
 #proprietati section{border-top:1px solid var(--linie);margin-top:16px;padding-top:12px}
 #grafic{position:static;width:100%;height:90px;border:1px solid var(--linie);background:var(--fond)}
 .masuri{display:flex;justify-content:space-between;color:var(--slab);font-variant-numeric:tabular-nums}
-@media (max-width:820px){
-  html,body{height:auto}
-  #app{height:auto;grid-template-columns:minmax(0,1fr);grid-template-rows:auto;grid-template-areas:"cap" "scena" "inv" "prop"}
-  main{height:70vh}
-  #inventar,#proprietati{border:0;border-top:1px solid var(--linie)}
-  #listaInventar{display:grid;grid-template-columns:1fr 1fr;gap:0 8px}
+/* ---------- ecrane tactile și înguste ---------- */
+.doar-tactil{display:none}
+#meniu{display:contents}
+.tactil{touch-action:manipulation}
+.tactil body{font-size:15px;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.tactil button,.tactil select{font-size:14px;min-height:44px;border-radius:8px}
+.tactil button.doar-tactil{display:inline-block}
+.tactil #app{position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"cap" "scena" "bara"}
+.tactil header{flex-wrap:nowrap;padding:6px 10px;gap:6px}
+.tactil .marca{font-size:21px}
+.tactil .marca span{display:none}
+.tactil header .grup{flex-wrap:nowrap}
+.tactil #btnUndo{font-size:0}
+.tactil #btnUndo::before{content:"↶";font-size:20px}
+.tactil #meniu{display:none;position:absolute;right:8px;top:58px;z-index:6;flex-direction:column;gap:6px;width:220px;padding:10px;background:var(--panou);border:1px solid var(--linie);border-radius:10px}
+.tactil #app[data-foaie=meniu] #meniu{display:flex}
+.tactil #unelte.gol,.tactil #unelte [data-unealta]{display:none}
+.tactil #bara{grid-area:bara;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:6px;background:var(--panou);border-top:1px solid var(--linie)}
+.tactil #bara button,.tactil #actiuni button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:4px 2px;font-size:19px;line-height:1.1;min-width:0}
+.tactil #bara small,.tactil #actiuni small{font-size:11px;font-weight:500}
+.tactil #actiuni{position:absolute;left:8px;right:8px;bottom:8px;display:grid;grid-template-columns:repeat(6,1fr);gap:4px;max-width:480px;margin:0 auto}
+.tactil #actiuni button{min-height:54px}
+.tactil #vedere{bottom:auto;top:8px;flex-direction:column;align-items:flex-end}
+.tactil #vedere button{min-width:44px}
+.tactil #indiciu{right:130px;font-size:13px}
+.tactil #condus{left:12px;right:12px;bottom:14px;justify-content:space-between;pointer-events:none}
+.tactil #condus button{pointer-events:auto;width:92px;height:76px;font-size:28px;border-radius:38px;background:#1f221fcc;touch-action:none}
+.tactil aside{display:none;position:absolute;z-index:5;left:0;right:0;bottom:0;max-height:55%;border:0;border-top:1px solid var(--accent);border-radius:14px 14px 0 0;padding:14px 16px 24px;overscroll-behavior:contain;box-shadow:0 -10px 30px #0008}
+.tactil #app[data-foaie=inventar] #inventar,.tactil #app[data-foaie=proprietati] #proprietati{display:block}
+.tactil .inchide{float:right}
+.tactil aside h2{min-height:44px}
+.tactil #app[data-foaie=inventar] #actiuni,.tactil #app[data-foaie=proprietati] #actiuni{display:none}
+.tactil #listaInventar{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:0 8px}
+.tactil .piesa{touch-action:pan-y;min-height:56px;justify-content:center}
+.tactil #inventar .nota{display:none}
+.tactil input[type=range]{height:36px}
+.tactil .bifa input{width:22px;height:22px}
+@media (min-width:800px){
+  .tactil aside{left:auto;top:0;width:340px;max-height:none;border:0;border-left:1px solid var(--accent);border-radius:0}
+}
+@media (max-height:500px){
+  .tactil #bara button{flex-direction:row;gap:6px;min-height:40px}
+  .tactil aside{left:auto;top:0;width:320px;max-height:none;border-radius:0}
+  .tactil header{padding-block:3px}
+  .tactil #actiuni{bottom:4px;max-width:380px}
+  .tactil #actiuni button{min-height:44px}
+  .tactil #actiuni small{display:none}
+  .tactil #vedere{flex-direction:row}
 }
