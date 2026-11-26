@@ -1,6 +1,8 @@
 // Constante, cataloage de piese și limitele fiecărei proprietăți.
 window.S = {};
 
+// Totul din acest bloc este local, ca să nu se ciocnească cu alte scripturi.
+(() => {
 // Un bloc texturat de 1 × 1 m. `textura` este numele din blocks.js.
 const bloc = (nume, textura, masa, frecare, culoare, w = 1, h = 1, info) => ({
   nume,
@@ -129,12 +131,13 @@ S.INVENTAR = [
   { grup: 'Roți' },
   { nume: 'Roată', info: 'motor condus de tine', date: { tip: 'roata', r: 0.55, masa: 8, frecare: 1.2, motor: 'taste', viteza: 9, cuplu: 130 } }
 ];
+})();
 
 // [cheie, etichetă, min, max, pas, unitate]
 S.CAMPURI = {
-  bloc: [['w', 'Lățime', 0.3, 30, 0.1, 'm'], ['h', 'Înălțime', 0.2, 30, 0.1, 'm'], ['masa', 'Masă', 1, 10000, 1, 'kg'], ['frecare', 'Coeficient de frecare', 0, 2, 0.01, '']],
-  susp: [['k', 'Forța arcului (rigiditate)', 100, 30000, 100, 'N/m'], ['c', 'Amortizare', 0, 3000, 10, 'N·s/m'], ['masa', 'Masă', 1, 40, 1, 'kg'], ['L', 'Lungime de repaus', 0.1, 5, 0.1, 'm']],
-  roata: [['r', 'Rază', 0.1, 3, 0.05, 'm'], ['masa', 'Masă', 1, 80, 1, 'kg'], ['frecare', 'Coeficient de frecare', 0, 2, 0.01, ''], ['viteza', 'Turație motor', -45, 45, 1, 'rad/s'], ['cuplu', 'Cuplu maxim', 10, 5000, 10, 'N·m']]
+  bloc: [['w', 'Lățime', 0.3, 12, 0.1, 'm'], ['h', 'Înălțime', 0.2, 8, 0.1, 'm'], ['masa', 'Masă', 1, 300, 1, 'kg'], ['frecare', 'Coeficient de frecare', 0, 2, 0.01, '']],
+  susp: [['k', 'Forța arcului (rigiditate)', 100, 15000, 100, 'N/m'], ['c', 'Amortizare', 0, 1500, 10, 'N·s/m'], ['masa', 'Masă', 1, 40, 1, 'kg'], ['L', 'Lungime de repaus', 0.6, 4, 0.1, 'm']],
+  roata: [['r', 'Rază', 0.2, 2, 0.05, 'm'], ['masa', 'Masă', 1, 80, 1, 'kg'], ['frecare', 'Coeficient de frecare', 0, 2, 0.01, ''], ['viteza', 'Turație motor', -30, 30, 1, 'rad/s'], ['cuplu', 'Cuplu maxim', 10, 1500, 10, 'N·m']]
 };
 S.NUME = { bloc: 'Bloc', susp: 'Suspensie', roata: 'Roată' };
 S.PLACA = { w: 0.7, h: 0.18 };
