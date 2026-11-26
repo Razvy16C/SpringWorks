@@ -138,8 +138,8 @@
       S.leaga(S.ancora(r, 0, r), S.ancora(s, 0, S.pozaParte(s, 0)), 'pivot');
     }
     // S.leaga mută piesa nouă, deci șasiul rămâne pe loc.
-    S.adauga(item('Lemn'), -15, S.inaltime(-15) + 0.5);
-    S.adauga(item('Lemn'), -15, S.inaltime(-15) + 1.5);
+    S.adauga(item('Stejar'), -15, S.inaltime(-15) + 0.5);
+    S.adauga(item('Stejar'), -15, S.inaltime(-15) + 1.5);
     return sasiu;
   };
 })();
