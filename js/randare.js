@@ -9,6 +9,19 @@
   const linie = pts => { g.beginPath(); pts.forEach((p, i) => i ? g.lineTo(p.x, p.y) : g.moveTo(p.x, p.y)); };
   const cerc = (p, r) => { g.beginPath(); g.arc(p.x, p.y, r, 0, 7); };
 
+  // Piesele salvate înainte de texturi își primesc textura după culoare.
+  const TEXTURI_VECHI = { '#a88661': 'wood_oak_planks', '#8c98a3': 'metal_steel', '#a9d3dd': 'ice_ice', '#7e9987': 'wood_spruce_planks' };
+
+  // Desenează textura blocului. Întoarce false dacă nu se poate (rămâne culoarea simplă).
+  function textura(p, w, h) {
+    const nume = p.textura || TEXTURI_VECHI[p.culoare];
+    if (!BLOCKS[nume] || !blockSheet.complete || !blockSheet.naturalWidth) return false;
+    if (w > h * 1.5) drawBeam(g, nume, 0, 0, w, h);                        // bară: textura se repetă
+    else if (h > w * 1.5) drawBeam(g, nume, 0, 0, h, w, Math.PI / 2);      // stâlp: la fel, pe verticală
+    else drawBlock(g, nume, 0, 0, w, h);
+    return true;
+  }
+
   function arc(p) {
     const a = S.laEcran(S.poza(p, 0)), b = S.laEcran(S.poza(p, 1)), z = S.cam.z;
     const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, nx = -dy / L, ny = dx / L;
@@ -35,12 +48,18 @@
       for (let s = 0; s < 3; s++) { const u = s * Math.PI / 1.5; linie([{ x: 0, y: 0 }, { x: Math.cos(u) * p.r * z * 0.6, y: Math.sin(u) * p.r * z * 0.6 }]); g.stroke(); }
     } else {
       const w = (p.tip === 'bloc' ? p.w : S.PLACA.w) * z, h = (p.tip === 'bloc' ? p.h : S.PLACA.h) * z;
-      g.fillStyle = p.tip === 'bloc' ? p.culoare : '#c3c9c0';
-      g.fillRect(-w / 2, -h / 2, w, h); g.strokeRect(-w / 2, -h / 2, w, h);
+      const texturat = p.tip === 'bloc' && textura(p, w, h);
+      if (!texturat) { g.fillStyle = p.tip === 'bloc' ? p.culoare : '#c3c9c0'; g.fillRect(-w / 2, -h / 2, w, h); }
+      g.strokeRect(-w / 2, -h / 2, w, h);
       if (p.tip === 'bloc') {
-        g.rotate(0);
         if (p.fix) { g.save(); g.beginPath(); g.rect(-w / 2, -h / 2, w, h); g.clip(); g.strokeStyle = '#0006'; for (let x = -w / 2 - h; x < w / 2; x += 9) { linie([{ x, y: h / 2 }, { x: x + h, y: -h / 2 }]); g.stroke(); } g.restore(); }
-        if (w > 36 && h > 15) { g.fillStyle = '#101210'; g.font = '600 11px "Plus Jakarta Sans",sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(p.masa + ' kg', 0, 0); }
+        if (w > 36 && h > 15) {
+          const text = p.masa + ' kg';
+          g.font = '600 11px "Plus Jakarta Sans",sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+          // fundal sub text, ca să se citească pe orice textură
+          if (texturat) { const l = g.measureText(text).width + 8; g.fillStyle = '#121312b3'; g.fillRect(-l / 2, -7, l, 14); }
+          g.fillStyle = texturat ? '#e8e9e4' : '#101210'; g.fillText(text, 0, 0);
+        }
       }
     }
     g.restore();
