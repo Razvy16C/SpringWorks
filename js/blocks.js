@@ -162,7 +162,7 @@ const BLOCKS = {"wood_oak_planks":[0,0],
   "path_sidewalk":[1152,1920]};
 
 const blockSheet = new Image();
-blockSheet.src = 'blocks.png';
+blockSheet.src = 'Img/blocks/blocks-tileset.png';
 
 // x, y = centre of the body; w, h = its size; angle in radians
 function drawBlock(ctx, name, x, y, w, h = w, angle = 0) {
