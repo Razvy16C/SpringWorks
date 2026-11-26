@@ -1,4 +1,4 @@
-# Speingworks
+# SpringWorks
 
 Deschide `index.html` în browser (dublu clic). Nu are nevoie de server.
 
