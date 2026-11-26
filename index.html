@@ -1,32 +1,40 @@
 <!doctype html>
-<html lang="ro">
+<html lang="en-us">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Atelier de Suspensii</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap">
+<title>SpringWorks</title>
+
+<!-- Fonts-->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Styles -->
 <link rel="stylesheet" href="css/stil.css">
+
 </head>
 <body>
 <div id="app">
   <header>
-    <div class="marca">Atelier<i>.</i> <span>Suspensii</span></div>
+    <div class="marca">Spring<i>Works</i></div>
     <div class="grup">
-      <button id="btnPlay" class="principal">▶ Simulează</button>
-      <button id="btnUndo" title="Ctrl+Z">Anulează</button>
-      <button id="btnMeniu" class="doar-tactil" aria-label="Meniu">☰ Meniu</button>
+      <button id="btnPlay" class="principal"><span class="ico ico-play" aria-hidden="true"></span> Simulează</button>
+      <button id="btnUndo" title="Ctrl+Z"><span class="ico ico-undo" aria-hidden="true"></span> Anulează</button>
+      <button id="btnMeniu" class="doar-tactil" aria-label="Meniu"><span class="ico ico-menu" aria-hidden="true"></span> Meniu</button>
       <div id="meniu">
-      <button id="btnSalveaza">Salvează</button>
-      <button id="btnIncarca">Încarcă</button>
-      <button id="btnExemplu">Mașina exemplu</button>
-      <button id="btnGoleste">Golește piesele</button>
-      <button id="btnSunet"></button>
+      <button id="btnSalveaza"><span class="ico ico-save" aria-hidden="true"></span> Salvează</button>
+      <button id="btnIncarca"><span class="ico ico-load" aria-hidden="true"></span> Încarcă</button>
+      <button id="btnExemplu"><span class="ico ico-example" aria-hidden="true"></span> Mașina exemplu</button>
+      <button id="btnGoleste"><span class="ico ico-clear" aria-hidden="true"></span> Golește piesele</button>
+      <button id="btnSunet"><span class="ico ico-sound" aria-hidden="true"></span>Sunet</button>
       </div>
     </div>
   </header>
 
   <aside id="inventar">
-    <button class="inchide doar-tactil">Închide</button>
+    <button class="inchide doar-tactil"><span class="ico ico-close" aria-hidden="true"></span> Închide</button>
     <h2>Inventar</h2>
     <p class="nota">Apasă sau trage o piesă în scenă.</p>
     <div id="listaInventar"></div>
@@ -51,21 +59,22 @@
       </select>
       <label id="marimeLabel" hidden>Pensulă <input id="marime" type="range" min="1" max="10" step="0.5" value="3"></label>
       <button id="btnTerenPlat" hidden>Teren plat</button>
+      <button id="btnTerenNou" hidden>Teren nou</button>
     </div>
     <div id="scena">
       <canvas id="panza" aria-label="Scena jocului"></canvas>
       <div id="indiciu" role="status"></div>
       <div id="actiuni" class="doar-tactil" hidden>
-        <button data-actiune="rotesteStanga" aria-label="Rotește la stânga">↺<small>Rotește</small></button>
-        <button data-actiune="rotesteDreapta" aria-label="Rotește la dreapta">↻<small>Rotește</small></button>
-        <button data-actiune="copiaza">⧉<small>Copiază</small></button>
-        <button data-actiune="desprinde">✂<small>Desprinde</small></button>
-        <button data-actiune="sterge">✕<small>Șterge</small></button>
-        <button id="btnReglaje">⚙<small>Reglează</small></button>
+        <button data-actiune="rotesteStanga" aria-label="Rotește la stânga"><span class="ico ico-rotate-left" aria-hidden="true"></span><small>Rotește</small></button>
+        <button data-actiune="rotesteDreapta" aria-label="Rotește la dreapta"><span class="ico ico-rotate-right" aria-hidden="true"></span><small>Rotește</small></button>
+        <button data-actiune="copiaza"><span class="ico ico-copy" aria-hidden="true"></span><small>Copiază</small></button>
+        <button data-actiune="desprinde"><span class="ico ico-cut" aria-hidden="true"></span><small>Desprinde</small></button>
+        <button data-actiune="sterge"><span class="ico ico-delete" aria-hidden="true"></span><small>Șterge</small></button>
+        <button id="btnReglaje"><span class="ico ico-gear" aria-hidden="true"></span><small>Reglează</small></button>
       </div>
       <div id="condus" hidden>
-        <button id="inapoi" aria-label="Înapoi">◀</button>
-        <button id="inainte" aria-label="Înainte">▶</button>
+        <button id="inapoi" aria-label="Înapoi"><span class="ico ico-arrow-left" aria-hidden="true"></span></button>
+        <button id="inainte" aria-label="Înainte"><span class="ico ico-arrow-right" aria-hidden="true"></span></button>
       </div>
       <div id="vedere" class="grup">
         <button id="btnPlus" aria-label="Mărește">+</button>
@@ -76,11 +85,11 @@
   </main>
 
   <nav id="bara" class="doar-tactil" aria-label="Unelte">
-    <button data-unealta="muta">✥<small>Mută</small></button>
-    <button data-unealta="leaga">⚭<small>Leagă</small></button>
-    <button data-unealta="teren">⛰<small>Teren</small></button>
-    <button id="btnPiese">＋<small>Piese</small></button>
-    <button id="btnLume">⚙<small>Reglaje</small></button>
+    <button data-unealta="muta"><span class="ico ico-move" aria-hidden="true"></span><small>Mută</small></button>
+    <button data-unealta="leaga"><span class="ico ico-link" aria-hidden="true"></span><small>Leagă</small></button>
+    <button data-unealta="teren"><span class="ico ico-terrain" aria-hidden="true"></span><small>Teren</small></button>
+    <button id="btnPiese"><span class="ico ico-parts" aria-hidden="true"></span><small>Piese</small></button>
+    <button id="btnLume"><span class="ico ico-gear" aria-hidden="true"></span><small>Reglaje</small></button>
   </nav>
 
   <aside id="proprietati">
@@ -91,10 +100,11 @@
       <label class="camp">Gravitație
         <select id="gravitatie">
           <option value="9.81">Pământ · 9,81 m/s²</option>
+          <option value="274">Soare · 274 m/s²</option>
           <option value="1.62">Lună · 1,62 m/s²</option>
           <option value="3.72">Marte · 3,72 m/s²</option>
           <option value="24.79">Jupiter · 24,79 m/s²</option>
-          <option value="0">Imponderabilitate</option>
+          <option value="0">Zero · 0 m/s²</option>
         </select>
       </label>
       <label class="camp">Frecarea terenului <output id="frecareTerenV"></output>

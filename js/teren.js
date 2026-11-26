@@ -1,13 +1,49 @@
-// Teren: un profil de înălțimi modelabil cu pensula, plus platforme desenate liber.
+// Teren: un profil de înălțimi generat procedural, modelabil cu pensula, plus platforme desenate liber.
 (() => {
-  const X0 = -60, PAS = 0.5, N = 241;
+  const X0 = -200, PAS = 0.25, N = 1602;
   S.TEREN = { X0, PAS, N, X1: X0 + (N - 1) * PAS };
 
-  S.terenImplicit = () => Array.from({ length: N }, (_, i) => {
-    const x = X0 + i * PAS;
-    const deal = (c, l, h) => Math.abs(x - c) < l ? h * (1 + Math.cos(Math.PI * (x - c) / l)) / 2 : 0;
-    return deal(1, 3, 0.8) + deal(18, 7, 1.5) - deal(32, 5, 1.2) + deal(-30, 10, 4);
-  });
+  // Generator cu samânță (mulberry32): același număr dă mereu același rezultat.
+  const mulberry32 = a => () => {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+
+  // Straturi de zgomot: dealuri late + denivelări mici.
+  // perioada = distanța (în m) dintre valorile aleatoare, amp = înălțimea maximă a stratului.
+  const OCTAVE = [
+    { perioada: 20, amp: 3.0 },
+    { perioada: 16, amp: 1.2 },
+    { perioada: 6,  amp: 0.4 },
+  ];
+  const ZONA_PLATA = 8;    // jumătate din lățimea zonei complet plate în jurul lui x = 0
+  const TRANZITIE = 12;    // cât de lin urcă terenul după zona plată
+
+  S.terenImplicit = (samanta = Date.now()) => {
+    const rnd = mulberry32(samanta);
+    const tabele = OCTAVE.map(o =>
+      Array.from({ length: Math.ceil(N * PAS / o.perioada) + 2 }, () => rnd() * 2 - 1));
+
+    const zgomot = (x, k) => {
+      const u = (x - X0) / OCTAVE[k].perioada, i = Math.floor(u), f = u - i;
+      const s = (1 - Math.cos(Math.PI * f)) / 2;            // interpolare cosinus
+      return tabele[k][i] * (1 - s) + tabele[k][i + 1] * s;
+    };
+
+    return Array.from({ length: N }, (_, i) => {
+      const x = X0 + i * PAS;
+      let h = 0;
+      for (let k = 0; k < OCTAVE.length; k++) h += zgomot(x, k) * OCTAVE[k].amp;
+
+      // zonă plată în jurul lui x = 0, ca mașina să nu apară într-un deal
+      const t = Math.min(1, Math.max(0, (Math.abs(x) - ZONA_PLATA) / TRANZITIE));
+      h *= t * t * (3 - 2 * t);                              // smoothstep
+
+      return Math.max(-15, Math.min(20, h));
+    });
+  };
 
   S.inaltime = x => {
     const t = Math.min(N - 1.001, Math.max(0, (x - X0) / PAS)), i = Math.floor(t), f = t - i;

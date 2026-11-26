@@ -135,9 +135,9 @@ S.INVENTAR = [
 
 // [cheie, etichetă, min, max, pas, unitate]
 S.CAMPURI = {
-  bloc: [['w', 'Lățime', 0.3, 12, 0.1, 'm'], ['h', 'Înălțime', 0.2, 8, 0.1, 'm'], ['masa', 'Masă', 1, 300, 1, 'kg'], ['frecare', 'Coeficient de frecare', 0, 2, 0.01, '']],
-  susp: [['k', 'Forța arcului (rigiditate)', 100, 15000, 100, 'N/m'], ['c', 'Amortizare', 0, 1500, 10, 'N·s/m'], ['masa', 'Masă', 1, 40, 1, 'kg'], ['L', 'Lungime de repaus', 0.6, 4, 0.1, 'm']],
-  roata: [['r', 'Rază', 0.2, 2, 0.05, 'm'], ['masa', 'Masă', 1, 80, 1, 'kg'], ['frecare', 'Coeficient de frecare', 0, 2, 0.01, ''], ['viteza', 'Turație motor', -30, 30, 1, 'rad/s'], ['cuplu', 'Cuplu maxim', 10, 1500, 10, 'N·m']]
+  bloc: [['w', 'Lățime', 0.1, 30, 0.1, 'm'], ['h', 'Înălțime', 0.1, 30, 0.1, 'm'], ['masa', 'Masă', 1, 10000, 1, 'kg'], ['frecare', 'Coeficient de frecare', 0, 2, 0.01, '']],
+  susp: [['k', 'Forța arcului (rigiditate)', 100, 30000, 100, 'N/m'], ['c', 'Amortizare', 0, 3000, 10, 'N·s/m'], ['masa', 'Masă', 1, 40, 1, 'kg'], ['L', 'Lungime de repaus', 0.1, 10, 0.1, 'm']],
+  roata: [['r', 'Rază', 0.1, 3, 0.05, 'm'], ['masa', 'Masă', 1, 80, 1, 'kg'], ['frecare', 'Coeficient de frecare', 0, 2, 0.01, ''], ['viteza', 'Turație motor', -60, 60, 1, 'rad/s'], ['cuplu', 'Cuplu maxim', 10, 30000, 10, 'N·m']]
 };
 S.NUME = { bloc: 'Bloc', susp: 'Suspensie', roata: 'Roată' };
 S.PLACA = { w: 0.7, h: 0.18 };

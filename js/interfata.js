@@ -4,24 +4,31 @@
   S.$ = $;
   S.ui = { unealta: 'muta', selectat: null, primul: null, tinta: null, cursor: null, desen: null, pensula: 'ridica', raza: 3 };
 
+const ICO = {
+  stanga: '<span class="ico ico-arrow-left" aria-hidden="true"></span>',
+  dreapta: '<span class="ico ico-arrow-right" aria-hidden="true"></span>'
+};
+
   const INDICII = {
     muta: 'Trage piesele. Q / E sau rotița (în timp ce ții piesa) le rotesc. Delete șterge, Ctrl+D copiază.',
     leaga: 'Apasă întâi punctul piesei care se mută, apoi punctul de destinație (altă piesă sau terenul).',
     teren: 'Ține apăsat și trage pentru a modela. Rotița mărește, butonul din dreapta mută vederea.',
-    sim: 'Trage piesele ca să le arunci. ← → conduc roțile. Spațiu oprește și revine la construcție.'
+    sim: `Trage piesele ca să le arunci. ${ICO.stanga} ${ICO.dreapta} conduc roțile. Spațiu oprește și revine la construcție.`,
   };
   const INDICII_TACTIL = {
     muta: 'Trage piesele cu degetul. Cu al doilea deget o rotești pe cea ținută.',
     leaga: 'Atinge punctul piesei care se mută, apoi destinația.',
     teren: 'Trage ca să modelezi. Două degete mută și măresc vederea.',
-    sim: 'Ține ◀ ▶ ca să conduci. Trage piesele ca să le arunci.'
+    sim: `Ține ${ICO.stanga} ${ICO.dreapta} ca să conduci. Trage piesele ca să le arunci.`
   };
   let cronometru;
   S.indiciu = text => {
     clearTimeout(cronometru);
     const mod = S.sim ? 'sim' : S.ui.unealta;
     if (S.tactil && text) text = text.replace('Esc renunță.', 'Apasă din nou „Leagă” ca să renunți.').replace('Apasă destinația', 'Atinge destinația');
-    $('indiciu').textContent = text || (S.tactil ? INDICII_TACTIL : INDICII)[mod];
+    const el = $('indiciu');
+    if (text) el.textContent = text;
+    else el.innerHTML = (S.tactil ? INDICII_TACTIL : INDICII)[mod];
     // pe ecrane mici indiciul dispare singur, ca să nu acopere scena
     if (text) cronometru = setTimeout(() => S.indiciu(), 4000);
     else if (S.tactil) cronometru = setTimeout(() => { $('indiciu').textContent = ''; }, 6000);
@@ -32,7 +39,7 @@
     document.querySelectorAll('[data-unealta]').forEach(b => b.classList.toggle('activ', b.dataset.unealta === nume));
     if (S.barăActiuni) S.barăActiuni();
     $('tipPrindere').hidden = nume !== 'leaga';
-    for (const id of ['pensula', 'marimeLabel', 'btnTerenPlat']) $(id).hidden = nume !== 'teren';
+    for (const id of ['pensula', 'marimeLabel', 'btnTerenPlat', 'btnTerenNou']) $(id).hidden = nume !== 'teren';
     S.indiciu();
   };
 
@@ -90,8 +97,8 @@
       const b = document.createElement('button');
       b.textContent = text; b.disabled = !!S.sim; b.onclick = fn; butoane.append(b);
     };
-    buton('↺ 15°', () => S.actiune('rotesteStanga'));
-    buton('↻ 15°', () => S.actiune('rotesteDreapta'));
+    buton('-15°', () => S.actiune('rotesteStanga'));
+    buton('+15°', () => S.actiune('rotesteDreapta'));
     buton('Copiază', () => S.actiune('copiaza'));
     buton('Desprinde', () => S.actiune('desprinde'));
     buton('Șterge', () => S.actiune('sterge'));

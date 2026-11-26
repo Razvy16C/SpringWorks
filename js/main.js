@@ -2,6 +2,11 @@
 (() => {
   const $ = S.$, ui = S.ui;
 
+  const ICO = {
+    suneton: '<span class="ico ico-sound-on" aria-hidden="true"></span>',
+    sunetoff: '<span class="ico ico-sound-off" aria-hidden="true"></span>'
+  };
+
   // Inventar: clic pune piesa în centru, tragerea o pune unde dai drumul.
   function pune(date, punct) {
     S.memoreaza();
@@ -36,6 +41,7 @@
   $('pensula').onchange = e => { ui.pensula = e.target.value; };
   $('marime').oninput = e => { ui.raza = Number(e.target.value); };
   $('btnTerenPlat').onclick = () => { S.memoreaza(); S.stare.teren.fill(0); S.stare.platforme = []; S.salveaza(); };
+  $('btnTerenNou').onclick = () => {S.memoreaza(); S.stare.teren = S.terenImplicit(); S.stare.platforme = []; S.salveaza();};
   $('btnPlay').onclick = e => { e.currentTarget.blur(); S.comutaSim(); };
   $('btnUndo').onclick = () => { if (!S.sim && S.anuleaza()) { reimprospateaza(); S.salveaza(); } };
   $('btnSalveaza').onclick = () => S.indiciu(S.salveaza('slot') ? 'Construcția a fost salvată în acest browser.' : 'Browserul nu permite salvarea aici.');
@@ -59,7 +65,7 @@
   $('gravitatie').onchange = e => { S.memoreaza(); S.stare.gravitatie = Number(e.target.value); S.salveaza(); };
   $('frecareTeren').oninput = e => { S.stare.frecareTeren = Number(e.target.value); S.lume(); S.salveaza(); };
 
-  const butonSunet = () => { $('btnSunet').textContent = S.sunet.setari.activ ? '🔊 Sunet' : '🔇 Mut'; };
+  const butonSunet = () => { $('btnSunet').innerHTML = S.sunet.setari.activ ? `${ICO.suneton} Sunet` : `${ICO.sunetoff} Mut`; };
   $('btnSunet').onclick = () => { S.sunet.comuta(); butonSunet(); };
   $('volum').value = S.sunet.setari.volum;
   $('volum').oninput = e => S.sunet.volum(Number(e.target.value));
@@ -68,6 +74,10 @@
 
   S.detecteaza();
   if (S.incarca()) {
+    if (!Array.isArray(S.stare.teren) || S.stare.teren.length !== S.TEREN.N) {
+    S.stare.teren = S.terenImplicit();
+    S.stare.platforme = [];
+    }
     const p = S.stare.piese[0];
     if (p) { S.cam.x = p.x; S.cam.y = p.y; }
     reimprospateaza();

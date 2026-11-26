@@ -1,14 +1,87 @@
-:root{color-scheme:dark;--fond:#121312;--panou:#181a18;--ridicat:#1f221f;--linie:#31362f;--text:#e8e9e4;--slab:#a4aaa1;--accent:#8fbd9f;--cald:#d9a066;
-  --titlu:"EB Garamond",Georgia,serif;--corp:"Plus Jakarta Sans",system-ui,sans-serif}
+:root
+{
+  color-scheme:dark;
+  --fond:#121312;
+  --panou:#181a18;
+  --ridicat:#1f221f;
+  --linie:#464646;
+  --text:#e8e9e4;
+  --slab:#d4d4d4;
+  --accent:#5bb67b;
+  --cald:#e48425;
+
+  --titlu:"Prompt", sans-serif;
+  --titlu-w: 800;
+  --titlu-s: 22px;
+
+  --corp:"IBM Plex Serif",system-ui,sans-serif;
+  --corp-w: 400;
+  --corp-s: 13px;
+}
+
 *{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{background:var(--fond);color:var(--text);font:13px/1.45 var(--corp)}
+
+html,body
+{
+  height:100%;
+  margin:0
+}
+
+body
+{
+  background:var(--fond);
+  color:var(--text);
+  font:var(--corp);
+  font-weight:var(--corp-w);
+  font-size:var(--corp-s)
+}
+
 [hidden]{display:none!important}
-#app{height:100%;display:grid;grid-template-columns:190px minmax(0,1fr) 260px;grid-template-rows:auto minmax(0,1fr);grid-template-areas:"cap cap cap" "inv scena prop"}
-header{grid-area:cap;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--linie)}
-.marca{font:500 26px/1 var(--titlu)}
-.marca i{color:var(--accent);font-style:normal}
-.marca span{font:500 11px var(--corp);letter-spacing:.16em;text-transform:uppercase;color:var(--slab);margin-left:8px}
+
+#app
+{
+  height:100%;
+  display:grid;
+  grid-template-columns:190px minmax(0,1fr) 260px;
+  grid-template-rows:auto minmax(0,1fr);
+  grid-template-areas:"cap cap cap" "inv scena prop"
+}
+
+header
+{
+  grid-area:cap;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 16px;
+  border-bottom:1px solid var(--linie)
+}
+.marca
+{
+  font:var(--titlu);
+  font-size:var(--titlu-s);
+  font-weight:var(--titlu-w);
+}
+
+.marca i
+{
+  color:var(--accent);
+  font-style:normal
+}
+
+.marca span
+{
+  font:var(--corp);
+  font-weight:var(--corp-w);
+  font-size:var(--corp-s);
+
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--slab);
+  margin-left:8px
+}
 .grup{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 button,select{font:500 12px var(--corp);color:var(--text);background:var(--ridicat);border:1px solid var(--linie);border-radius:3px;padding:7px 11px;cursor:pointer}
 button:hover,select:hover{border-color:var(--accent)}
@@ -54,7 +127,7 @@ input[type=range]{accent-color:var(--accent)}
 .tactil .marca span{display:none}
 .tactil header .grup{flex-wrap:nowrap}
 .tactil #btnUndo{font-size:0}
-.tactil #btnUndo::before{content:"↶";font-size:20px}
+.tactil #btnUndo::before{font-size:20px}
 .tactil #meniu{display:none;position:absolute;right:8px;top:58px;z-index:6;flex-direction:column;gap:6px;width:220px;padding:10px;background:var(--panou);border:1px solid var(--linie);border-radius:10px}
 .tactil #app[data-foaie=meniu] #meniu{display:flex}
 .tactil #unelte.gol,.tactil #unelte [data-unealta]{display:none}
@@ -68,13 +141,52 @@ input[type=range]{accent-color:var(--accent)}
 .tactil #indiciu{right:130px;font-size:13px}
 .tactil #condus{left:12px;right:12px;bottom:14px;justify-content:space-between;pointer-events:none}
 .tactil #condus button{pointer-events:auto;width:92px;height:76px;font-size:28px;border-radius:38px;background:#1f221fcc;touch-action:none}
-.tactil aside{display:none;position:absolute;z-index:5;left:0;right:0;bottom:0;max-height:55%;border:0;border-top:1px solid var(--accent);border-radius:14px 14px 0 0;padding:14px 16px 24px;overscroll-behavior:contain;box-shadow:0 -10px 30px #0008}
-.tactil #app[data-foaie=inventar] #inventar,.tactil #app[data-foaie=proprietati] #proprietati{display:block}
-.tactil .inchide{float:right}
-.tactil aside h2{min-height:44px}
-.tactil #app[data-foaie=inventar] #actiuni,.tactil #app[data-foaie=proprietati] #actiuni{display:none}
-.tactil #listaInventar{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:0 8px}
-.tactil .piesa{touch-action:pan-y;min-height:56px;justify-content:center}
+
+.tactil aside
+{
+  display:none;
+  position:absolute;
+  z-index:5;
+  left:0;
+  right:0;
+  bottom:0;
+  max-height:55%;
+  border:0;
+  border-top:1px solid var(--accent);
+  border-radius:14px 14px 0 0;
+  padding:14px 16px 24px;
+  overscroll-behavior:contain;
+  box-shadow:0 -10px 30px rgba(0, 0, 0, 0.772)
+}
+
+.tactil #app[data-foaie=inventar] #inventar,
+.tactil #app[data-foaie=proprietati] #proprietati{display:block}
+
+.tactil .inchide
+{
+  float:right
+}
+.tactil aside h2
+{
+  min-height:44px
+}
+
+.tactil #app[data-foaie=inventar] #actiuni,
+.tactil #app[data-foaie=proprietati] #actiuni{display:none}
+
+.tactil #listaInventar
+{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:0 8px
+}
+
+.tactil .piesa
+{
+  touch-action:pan-y;
+  min-height:56px;
+  justify-content:center
+}
 .tactil #inventar .nota{display:none}
 .tactil input[type=range]{height:36px}
 .tactil .bifa input{width:22px;height:22px}
@@ -89,4 +201,116 @@ input[type=range]{accent-color:var(--accent)}
   .tactil #actiuni button{min-height:44px}
   .tactil #actiuni small{display:none}
   .tactil #vedere{flex-direction:row}
+}
+
+.ico {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: -3px;
+  background-color: currentColor;   /* icon takes the text color */
+  -webkit-mask: var(--icon) center / contain no-repeat;
+          mask: var(--icon) center / contain no-repeat;
+}
+.ico-undo 
+{ 
+  --icon: url("../img/icons/undo.svg"); 
+}
+.ico-play 
+{ 
+  --icon: url("../img/icons/play.svg"); 
+}
+.ico-menu 
+{ 
+  --icon: url("../img/icons/menu.svg"); 
+}
+.ico-save 
+{ 
+  --icon: url("../img/icons/save.svg"); 
+}
+.ico-load 
+{ 
+  --icon: url("../img/icons/load.svg"); 
+}
+.ico-example 
+{ 
+  --icon: url("../img/icons/example.svg"); 
+}
+.ico-clear 
+{ 
+  --icon: url("../img/icons/clear.svg"); 
+}
+
+.ico-sound-on 
+{ 
+  --icon: url("../img/icons/sound-on.svg"); 
+}
+
+.ico-sound-off 
+{ 
+  --icon: url("../img/icons/sound-off.svg"); 
+}
+.ico-close 
+{ 
+  --icon: url("../img/icons/close.svg"); 
+}
+
+.ico-arrow-left 
+{ 
+  --icon: url("../img/icons/arrow-left.svg");
+}
+
+.ico-arrow-right 
+{ 
+  --icon: url("../img/icons/arrow-right.svg"); 
+}
+
+.ico-delete 
+{ 
+  --icon: url("../img/icons/delete.svg"); 
+}
+
+.ico-gear 
+{ 
+  --icon: url("../img/icons/gear.svg"); 
+}
+
+.ico-cut 
+{ 
+  --icon: url("../img/icons/cut.svg"); 
+}
+
+.ico-copy 
+{ 
+  --icon: url("../img/icons/copy.svg"); 
+}
+
+.ico-rotate-left 
+{ 
+  --icon: url("../img/icons/rotate-left.svg"); 
+}
+
+.ico-rotate-right 
+{ 
+  --icon: url("../img/icons/rotate-right.svg"); 
+}
+
+.ico-move 
+{ 
+  --icon: url("../img/icons/move.svg"); 
+}
+
+.ico-link 
+{ 
+  --icon: url("../img/icons/link.svg"); 
+}
+
+.ico-terrain 
+{ 
+  --icon: url("../img/icons/terrain.svg"); 
+}
+
+.ico-parts 
+{ 
+  --icon: url("../img/icons/parts.svg"); 
 }
