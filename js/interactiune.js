@@ -46,16 +46,16 @@
 
   function clicLegare(w) {
     const t = tintaLegare(w);
-    if (!t) return S.indiciu('Apasă pe o piesă sau pe teren.');
+    if (!t) return S.indiciu('Click a part or the terrain.');
     if (!ui.primul) {
-      if (t.ancora.id === 'teren') return S.indiciu('Începe cu piesa care se mută. Terenul se alege al doilea.');
+      if (t.ancora.id === 'teren') return S.indiciu('Start with the part to move. Select the terrain second.');
       ui.primul = t.ancora;
-      return S.indiciu('Acum apasă destinația. Esc renunță.');
+      return S.indiciu('Now click the destination. Press Esc to cancel.');
     }
     S.memoreaza();
     const eroare = S.leaga(ui.primul, t.ancora, $('tipPrindere').value);
     ui.primul = null;
-    S.indiciu(eroare || 'Prins.');
+    S.indiciu(eroare || 'Connected.');
     S.sunet.efect(eroare ? 'eroare' : 'prinde');
     S.salveaza();
   }
@@ -140,7 +140,7 @@
     } else if (gest.tip === 'muta') {
       const grup = S.ansamblu(gest.id), dx = w.x - gest.ultim.x, dy = w.y - gest.ultim.y;
       if (!gest.mutat && Math.hypot(dx, dy) < 4 / S.cam.z) return;
-      if (S.desprindeDeTeren(grup)) S.indiciu('Ansamblul a fost desprins de teren.');
+      if (S.desprindeDeTeren(grup)) S.indiciu('Assembly disconnected from the terrain.');
       S.muta(grup, dx, dy);
       gest.ultim = w; gest.mutat = true;
     } else if (gest.tip === 'trage') S.trage(w);

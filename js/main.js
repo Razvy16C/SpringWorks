@@ -44,11 +44,11 @@
   $('btnTerenNou').onclick = () => {S.memoreaza(); S.stare.teren = S.terenImplicit(); S.stare.platforme = []; S.salveaza();};
   $('btnPlay').onclick = e => { e.currentTarget.blur(); S.comutaSim(); };
   $('btnUndo').onclick = () => { if (!S.sim && S.anuleaza()) { reimprospateaza(); S.salveaza(); } };
-  $('btnSalveaza').onclick = () => S.indiciu(S.salveaza('slot') ? 'Construcția a fost salvată în acest browser.' : 'Browserul nu permite salvarea aici.');
+  $('btnSalveaza').onclick = () => S.indiciu(S.salveaza('slot') ? 'Build saved in this browser.' : 'This browser does not allow saving here.');
   $('btnIncarca').onclick = () => {
     S.memoreaza();
-    if (S.incarca('slot')) { reimprospateaza(); S.salveaza(); S.indiciu('Construcție încărcată.'); }
-    else S.indiciu('Nu există încă o salvare. Apasă întâi Salvează.');
+    if (S.incarca('slot')) { reimprospateaza(); S.salveaza(); S.indiciu('Build loaded.'); }
+    else S.indiciu('No saved build yet. Click Save first.');
   };
   const arataExemplu = () => {
     const sasiu = S.masinaExemplu();
@@ -57,7 +57,7 @@
     S.selecteaza(S.stare.piese.find(p => p.tip === 'susp').id);
   };
   $('btnExemplu').onclick = () => { S.memoreaza(); arataExemplu(); S.salveaza(); };
-  $('btnGoleste').onclick = () => { S.memoreaza(); S.stare.piese = []; S.stare.prinderi = []; reimprospateaza(); S.salveaza(); S.indiciu('Piese șterse. „Anulează” le readuce.'); };
+  $('btnGoleste').onclick = () => { S.memoreaza(); S.stare.piese = []; S.stare.prinderi = []; reimprospateaza(); S.salveaza(); S.indiciu('Parts deleted. Undo will restore them.'); };
   $('btnCentru').onclick = () => {
     const p = S.piesa(ui.selectat) || S.stare.piese[0];
     if (p) { const q = S.poza(p, 0); S.cam.x = q.x; S.cam.y = q.y; } else { S.cam.x = 0; S.cam.y = 2; }

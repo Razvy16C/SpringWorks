@@ -21,24 +21,24 @@ const grup = (titlu, masa, frecare, lista) => [
 ];
 
 S.INVENTAR = [
-  { grup: 'Construcție' },
-  bloc('Șasiu', 'wood_spruce_planks', 40, 0.4, '#7e9987', 4, 0.5, 'bară lungă, 40 kg'),
+  { grup: 'Construction' },
+  bloc('Chassis', 'wood_spruce_planks', 40, 0.4, '#7e9987', 4, 0.5, 'long beam, 40 kg'),
 
   ...grup('Lemn', 10, 0.5, `
-    wood_oak_planks|Stejar|#a98762; wood_birch_planks|Mesteacăn|#cdb58c; wood_spruce_planks|Molid|#7a5c42;
-    wood_mahogany_planks|Mahon|#8c4c40; wood_walnut_planks|Nuc|#62483a; wood_oak_vertical|Stejar vertical|#a98762;
-    wood_birch_vertical|Mesteacăn vertical|#cdb58c; wood_log_end|Buștean|#b89468; wood_bark|Scoarță|#6c503c;
-    wood_crate|Ladă|#a98762`),
+    wood_oak_planks|Oak|#a98762; wood_birch_planks|Birch|#cdb58c; wood_spruce_planks|Spruce|#7a5c42;
+    wood_mahogany_planks|Mahogany|#8c4c40; wood_walnut_planks|Walnut|#62483a; wood_oak_vertical|Vertical oak|#a98762;
+    wood_birch_vertical|Vertical birch|#cdb58c; wood_log_end|Log end|#b89468; wood_bark|Bark|#6c503c;
+    wood_crate|Crate|#a98762`),
 
-  ...grup('Piatră', 40, 0.7, `
-    stone_stone|Piatră|#8b8e8c; stone_slate|Ardezie|#646a73; stone_limestone|Calcar|#aca392;
-    stone_cobblestone|Piatră cubică|#8d908f; stone_dark_cobble|Piatră cubică închisă|#5d5b62;
-    stone_mossy_cobble|Piatră cu mușchi|#858a82; stone_smooth_stone|Piatră netedă|#9a9c9d;
-    stone_stone_tiles|Lespezi|#8e9195; stone_chiseled_stone|Piatră cioplită|#94979c;
+  ...grup('Stone', 40, 0.7, `
+    stone_stone|Stone|#8b8e8c; stone_slate|Slate|#646a73; stone_limestone|Limestone|#aca392;
+    stone_cobblestone|Cobblestone|#8d908f; stone_dark_cobble|Dark cobblestone|#5d5b62;
+    stone_mossy_cobble|Mossy cobblestone|#858a82; stone_smooth_stone|Smooth stone|#9a9c9d;
+    stone_stone_tiles|Stone slabs|#8e9195; stone_chiseled_stone|Chiseled stone|#94979c;
     marble_granite|Granit|#9a7e74; marble_black_granite|Granit negru|#45464b`),
 
   ...grup('Metal', 60, 0.35, `
-    metal_iron|Fier|#a6aaad; metal_steel|Oțel|#7c8a99; metal_copper|Cupru|#bd7d5e; metal_gold|Aur|#d5ae4c;
+    metal_iron|Iron|#a6aaad; metal_steel|Steel|#7c8a99; metal_copper|Copper|#bd7d5e; metal_gold|Gold|#d5ae4c;
     metal_bronze|Bronz|#9c7a4e; metal_titanium|Titan|#c0c5ca; metal_diamond_plate|Tablă striată|#8b9096;
     metal_corrugated|Tablă ondulată|#969ca3; metal_rusty|Metal ruginit|#7e7b78; metal_grate|Grătar|#5b6167`),
 
@@ -128,18 +128,18 @@ S.INVENTAR = [
   { nume: 'Moale', info: '800 N/m', date: { tip: 'susp', L: 1.4, k: 800, c: 80, masa: 4 } },
   { nume: 'Standard', info: '2500 N/m', date: { tip: 'susp', L: 1.2, k: 2500, c: 220, masa: 6 } },
   { nume: 'Tare', info: '8000 N/m', date: { tip: 'susp', L: 1, k: 8000, c: 600, masa: 8 } },
-  { grup: 'Roți' },
-  { nume: 'Roată', info: 'motor condus de tine', date: { tip: 'roata', r: 0.55, masa: 8, frecare: 1.2, motor: 'taste', viteza: 9, cuplu: 130 } }
+  { grup: 'Wheels' },
+  { nume: 'Wheel', info: 'player-controlled motor', date: { tip: 'roata', r: 0.55, masa: 8, frecare: 1.2, motor: 'taste', viteza: 9, cuplu: 130 } }
 ];
 })();
 
 // [cheie, etichetă, min, max, pas, unitate]
 S.CAMPURI = {
-  bloc: [['w', 'Lățime', 0.1, 30, 0.1, 'm'], ['h', 'Înălțime', 0.1, 30, 0.1, 'm'], ['masa', 'Masă', 1, 10000, 1, 'kg'], ['frecare', 'Coeficient de frecare', 0, 2, 0.01, '']],
-  susp: [['k', 'Forța arcului (rigiditate)', 100, 30000, 100, 'N/m'], ['c', 'Amortizare', 0, 3000, 10, 'N·s/m'], ['masa', 'Masă', 1, 40, 1, 'kg'], ['L', 'Lungime de repaus', 0.1, 10, 0.1, 'm']],
-  roata: [['r', 'Rază', 0.1, 3, 0.05, 'm'], ['masa', 'Masă', 1, 80, 1, 'kg'], ['frecare', 'Coeficient de frecare', 0, 2, 0.01, ''], ['viteza', 'Turație motor', -60, 60, 1, 'rad/s'], ['cuplu', 'Cuplu maxim', 10, 30000, 10, 'N·m']]
+  bloc: [['w', 'Width', 0.1, 30, 0.1, 'm'], ['h', 'Height', 0.1, 30, 0.1, 'm'], ['masa', 'Mass', 1, 10000, 1, 'kg'], ['frecare', 'Friction coefficient', 0, 2, 0.01, '']],
+  susp: [['k', 'Spring stiffness', 100, 30000, 100, 'N/m'], ['c', 'Damping', 0, 3000, 10, 'N·s/m'], ['masa', 'Mass', 1, 40, 1, 'kg'], ['L', 'Rest length', 0.1, 10, 0.1, 'm']],
+  roata: [['r', 'Radius', 0.1, 3, 0.05, 'm'], ['masa', 'Mass', 1, 80, 1, 'kg'], ['frecare', 'Friction coefficient', 0, 2, 0.01, ''], ['viteza', 'Motor speed', -60, 60, 1, 'rad/s'], ['cuplu', 'Max torque', 10, 30000, 10, 'N·m']]
 };
-S.NUME = { bloc: 'Bloc', susp: 'Suspensie', roata: 'Roată' };
+S.NUME = { bloc: 'Block', susp: 'Spring', roata: 'Wheel' };
 S.PLACA = { w: 0.7, h: 0.18 };
 S.CURSA = { min: 0.35, max: 1.65 }; // fracțiuni din lungimea de repaus
 S.CHEIE = 'atelier-suspensii';

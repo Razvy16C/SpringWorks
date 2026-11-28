@@ -10,22 +10,22 @@ const ICO = {
 };
 
   const INDICII = {
-    muta: 'Trage piesele. Q / E sau rotița (în timp ce ții piesa) le rotesc. Delete șterge, Ctrl+D copiază.',
-    leaga: 'Apasă întâi punctul piesei care se mută, apoi punctul de destinație (altă piesă sau terenul).',
-    teren: 'Ține apăsat și trage pentru a modela. Rotița mărește, butonul din dreapta mută vederea.',
-    sim: `Trage piesele ca să le arunci. ${ICO.stanga} ${ICO.dreapta} conduc roțile. Spațiu oprește și revine la construcție.`,
+    muta: 'Drag parts to move them. Press Q / E or use the wheel while holding a part to rotate it. Delete removes it; Ctrl+D copies it.',
+    leaga: 'Click the part connection point first, then the destination point on another part or the terrain.',
+    teren: 'Click and drag to shape the terrain. Use the wheel to zoom and the right mouse button to pan.',
+    sim: `Drag parts to throw them. ${ICO.stanga} ${ICO.dreapta} drive the wheels. Press Space to stop and return to building.`,
   };
   const INDICII_TACTIL = {
-    muta: 'Trage piesele cu degetul. Cu al doilea deget o rotești pe cea ținută.',
-    leaga: 'Atinge punctul piesei care se mută, apoi destinația.',
-    teren: 'Trage ca să modelezi. Două degete mută și măresc vederea.',
-    sim: `Ține ${ICO.stanga} ${ICO.dreapta} ca să conduci. Trage piesele ca să le arunci.`
+    muta: 'Drag parts with one finger. Use a second finger to rotate the part you are holding.',
+    leaga: 'Tap the connection point on a part, then tap the destination.',
+    teren: 'Drag to shape the terrain. Use two fingers to pan and zoom.',
+    sim: `Hold ${ICO.stanga} ${ICO.dreapta} to drive. Drag parts to throw them.`
   };
   let cronometru;
   S.indiciu = text => {
     clearTimeout(cronometru);
     const mod = S.sim ? 'sim' : S.ui.unealta;
-    if (S.tactil && text) text = text.replace('Esc renunță.', 'Apasă din nou „Leagă” ca să renunți.').replace('Apasă destinația', 'Atinge destinația');
+    if (S.tactil && text) text = text.replace('Press Esc to cancel.', 'Tap Connect again to cancel.').replace('Click the destination', 'Tap the destination');
     const el = $('indiciu');
     if (text) el.textContent = text;
     else el.innerHTML = (S.tactil ? INDICII_TACTIL : INDICII)[mod];
@@ -57,8 +57,8 @@ const ICO = {
     el.innerHTML = '';
     const adauga = (html) => { el.insertAdjacentHTML('beforeend', html); return el.lastElementChild; };
     if (!p) {
-      adauga('<h2>Proprietăți</h2>');
-      adauga('<p class="nota">Selectează o piesă din scenă ca să îi schimbi masa, mărimea, frecarea sau arcul.</p>');
+      adauga('<h2>Properties</h2>');
+      adauga('<p class="nota">Select a part in the scene to change its mass, size, friction, or spring settings.</p>');
       return;
     }
     adauga(`<h2>${S.NUME[p.tip]} #${p.id}</h2>`);
@@ -77,18 +77,18 @@ const ICO = {
     }
     const alege = (eticheta, html) => adauga(`<label class="camp">${eticheta}${html}</label>`);
     if (p.tip === 'roata') {
-      const sel = alege('Motor', '<select id="motor"><option value="taste">Condus de tine</option><option value="constant">Mereu pornit</option><option value="liber">Roată liberă</option></select>').querySelector('select');
+      const sel = alege('Motor', '<select id="motor"><option value="taste">Player controlled</option><option value="constant">Always on</option><option value="liber">Free wheel</option></select>').querySelector('select');
       sel.value = p.motor; sel.disabled = !!S.sim;
       sel.onchange = () => { S.memoreaza(); S.piesa(p.id).motor = sel.value; S.salveaza(); };
-      adauga('<p class="nota">Motorul acționează doar dacă roata e prinsă de ceva.</p>');
+      adauga('<p class="nota">The motor only runs when the wheel is connected to something.</p>');
     }
     if (p.tip === 'bloc') {
-      const lab = adauga('<label class="bifa"><input id="fix" type="checkbox"> Fixat în spațiu</label>'), inp = lab.querySelector('input');
+      const lab = adauga('<label class="bifa"><input id="fix" type="checkbox"> Fixed in place</label>'), inp = lab.querySelector('input');
       inp.checked = p.fix; inp.disabled = !!S.sim;
       inp.onchange = () => { S.memoreaza(); S.piesa(p.id).fix = inp.checked; S.salveaza(); };
     }
     if (p.tip === 'susp' && S.sim) {
-      adauga('<h3>Lungime în timp real</h3>');
+      adauga('<h3>Live length</h3>');
       adauga('<canvas id="grafic"></canvas>');
       adauga('<div class="masuri"><span id="lungimeAcum"></span><span id="fortaAcum"></span></div>');
     }
@@ -99,9 +99,9 @@ const ICO = {
     };
     buton('-15°', () => S.actiune('rotesteStanga'));
     buton('+15°', () => S.actiune('rotesteDreapta'));
-    buton('Copiază', () => S.actiune('copiaza'));
-    buton('Desprinde', () => S.actiune('desprinde'));
-    buton('Șterge', () => S.actiune('sterge'));
+    buton('Copy', () => S.actiune('copiaza'));
+    buton('Disconnect', () => S.actiune('desprinde'));
+    buton('Delete', () => S.actiune('sterge'));
   };
 
   S.actiune = nume => {
@@ -120,7 +120,7 @@ const ICO = {
     }
     if (nume === 'desprinde') {
       S.stare.prinderi = S.stare.prinderi.filter(c => c.a.id !== p.id && c.b.id !== p.id);
-      S.indiciu('Piesa a fost desprinsă.');
+      S.indiciu('Part disconnected.');
     }
     if (nume === 'sterge') { S.sterge(p.id); S.selecteaza(null); }
     S.salveaza();
@@ -139,7 +139,7 @@ const ICO = {
     S.ui.primul = null;
     S.directie = 0;
     const b = $('btnPlay');
-    b.textContent = S.sim ? '■ Oprește' : '▶ Simulează';
+    b.textContent = S.sim ? '■ Stop' : '▶ Simulate';
     b.classList.toggle('rulare', !!S.sim);
     $('condus').hidden = !S.sim;
     document.querySelectorAll('#unelte button, #unelte select, .piesa, #bara [data-unealta], #btnPiese, #btnUndo, #btnIncarca, #btnExemplu, #btnGoleste, #gravitatie, #frecareTeren').forEach(e => e.disabled = !!S.sim);

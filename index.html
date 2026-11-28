@@ -20,100 +20,100 @@
   <header>
     <div class="marca">Spring<i>Works</i></div>
     <div class="grup">
-      <button id="btnPlay" class="principal"><span class="ico ico-play" aria-hidden="true"></span> Simulează</button>
-      <button id="btnUndo" title="Ctrl+Z"><span class="ico ico-undo" aria-hidden="true"></span> Anulează</button>
-      <button id="btnMeniu" class="doar-tactil" aria-label="Meniu"><span class="ico ico-menu" aria-hidden="true"></span> Meniu</button>
+      <button id="btnPlay" class="principal"><span class="ico ico-play" aria-hidden="true"></span> Simulate</button>
+      <button id="btnUndo" title="Ctrl+Z"><span class="ico ico-undo" aria-hidden="true"></span> Undo</button>
+      <button id="btnMeniu" class="doar-tactil" aria-label="Menu"><span class="ico ico-menu" aria-hidden="true"></span> Menu</button>
       <div id="meniu">
-      <button id="btnSalveaza"><span class="ico ico-save" aria-hidden="true"></span> Salvează</button>
-      <button id="btnIncarca"><span class="ico ico-load" aria-hidden="true"></span> Încarcă</button>
-      <button id="btnExemplu"><span class="ico ico-example" aria-hidden="true"></span> Mașina exemplu</button>
-      <button id="btnGoleste"><span class="ico ico-clear" aria-hidden="true"></span> Golește piesele</button>
-      <button id="btnSunet"><span class="ico ico-sound" aria-hidden="true"></span>Sunet</button>
+      <button id="btnSalveaza"><span class="ico ico-save" aria-hidden="true"></span> Save</button>
+      <button id="btnIncarca"><span class="ico ico-load" aria-hidden="true"></span> Load</button>
+      <button id="btnExemplu"><span class="ico ico-example" aria-hidden="true"></span> Example car</button>
+      <button id="btnGoleste"><span class="ico ico-clear" aria-hidden="true"></span> Clear parts</button>
+      <button id="btnSunet"><span class="ico ico-sound" aria-hidden="true"></span>Sound</button>
       </div>
     </div>
   </header>
 
   <aside id="inventar">
-    <button class="inchide doar-tactil"><span class="ico ico-close" aria-hidden="true"></span> Închide</button>
-    <h2>Inventar</h2>
-    <p class="nota">Apasă sau trage o piesă în scenă.</p>
+    <button class="inchide doar-tactil"><span class="ico ico-close" aria-hidden="true"></span> Close</button>
+    <h2>Inventory</h2>
+    <p class="nota">Tap or drag a part into the scene.</p>
     <div id="listaInventar"></div>
   </aside>
 
   <main>
     <div id="unelte" class="grup">
-      <button data-unealta="muta" title="1">Mută</button>
-      <button data-unealta="leaga" title="2">Leagă</button>
-      <button data-unealta="teren" title="3">Teren</button>
+      <button data-unealta="muta" title="1">Move</button>
+      <button data-unealta="leaga" title="2">Connect</button>
+      <button data-unealta="teren" title="3">Terrain</button>
       <select id="tipPrindere" hidden aria-label="Tip prindere">
-        <option value="rigid">Prindere rigidă</option>
-        <option value="pivot">Prindere cu pivot</option>
+        <option value="rigid">Rigid joint</option>
+        <option value="pivot">Pivot joint</option>
       </select>
-      <select id="pensula" hidden aria-label="Pensulă teren">
-        <option value="ridica">Ridică</option>
-        <option value="coboara">Coboară</option>
-        <option value="netezeste">Netezește</option>
-        <option value="niveleaza">Nivelează</option>
-        <option value="deseneaza">Desenează platformă</option>
-        <option value="sterge">Șterge platformă</option>
+      <select id="pensula" hidden aria-label="Terrain brush">
+        <option value="ridica">Raise</option>
+        <option value="coboara">Lower</option>
+        <option value="netezeste">Smooth</option>
+        <option value="niveleaza">Level</option>
+        <option value="deseneaza">Draw platform</option>
+        <option value="sterge">Erase platform</option>
       </select>
-      <label id="marimeLabel" hidden>Pensulă <input id="marime" type="range" min="1" max="10" step="0.5" value="3"></label>
-      <button id="btnTerenPlat" hidden>Teren plat</button>
-      <button id="btnTerenNou" hidden>Teren nou</button>
+      <label id="marimeLabel" hidden>Brush <input id="marime" type="range" min="1" max="10" step="0.5" value="3"></label>
+      <button id="btnTerenPlat" hidden>Flat terrain</button>
+      <button id="btnTerenNou" hidden>New terrain</button>
     </div>
     <div id="scena">
-      <canvas id="panza" aria-label="Scena jocului"></canvas>
+      <canvas id="panza" aria-label="Game scene"></canvas>
       <div id="indiciu" role="status"></div>
       <div id="actiuni" class="doar-tactil" hidden>
-        <button data-actiune="rotesteStanga" aria-label="Rotește la stânga"><span class="ico ico-rotate-left" aria-hidden="true"></span><small>Rotește</small></button>
-        <button data-actiune="rotesteDreapta" aria-label="Rotește la dreapta"><span class="ico ico-rotate-right" aria-hidden="true"></span><small>Rotește</small></button>
-        <button data-actiune="copiaza"><span class="ico ico-copy" aria-hidden="true"></span><small>Copiază</small></button>
-        <button data-actiune="desprinde"><span class="ico ico-cut" aria-hidden="true"></span><small>Desprinde</small></button>
-        <button data-actiune="sterge"><span class="ico ico-delete" aria-hidden="true"></span><small>Șterge</small></button>
-        <button id="btnReglaje"><span class="ico ico-gear" aria-hidden="true"></span><small>Reglează</small></button>
+        <button data-actiune="rotesteStanga" aria-label="Rotate left"><span class="ico ico-rotate-left" aria-hidden="true"></span><small>Rotate</small></button>
+        <button data-actiune="rotesteDreapta" aria-label="Rotate right"><span class="ico ico-rotate-right" aria-hidden="true"></span><small>Rotate</small></button>
+        <button data-actiune="copiaza"><span class="ico ico-copy" aria-hidden="true"></span><small>Copy</small></button>
+        <button data-actiune="desprinde"><span class="ico ico-cut" aria-hidden="true"></span><small>Disconnect</small></button>
+        <button data-actiune="sterge"><span class="ico ico-delete" aria-hidden="true"></span><small>Delete</small></button>
+        <button id="btnReglaje"><span class="ico ico-gear" aria-hidden="true"></span><small>Settings</small></button>
       </div>
       <div id="condus" hidden>
-        <button id="inapoi" aria-label="Înapoi"><span class="ico ico-arrow-left" aria-hidden="true"></span></button>
-        <button id="inainte" aria-label="Înainte"><span class="ico ico-arrow-right" aria-hidden="true"></span></button>
+        <button id="inapoi" aria-label="Backward"><span class="ico ico-arrow-left" aria-hidden="true"></span></button>
+        <button id="inainte" aria-label="Forward"><span class="ico ico-arrow-right" aria-hidden="true"></span></button>
       </div>
       <div id="vedere" class="grup">
-        <button id="btnPlus" aria-label="Mărește">+</button>
-        <button id="btnMinus" aria-label="Micșorează">−</button>
-        <button id="btnCentru">Centrează</button>
+        <button id="btnPlus" aria-label="Zoom in">+</button>
+        <button id="btnMinus" aria-label="Zoom out">−</button>
+        <button id="btnCentru">Center</button>
       </div>
     </div>
   </main>
 
-  <nav id="bara" class="doar-tactil" aria-label="Unelte">
-    <button data-unealta="muta"><span class="ico ico-move" aria-hidden="true"></span><small>Mută</small></button>
-    <button data-unealta="leaga"><span class="ico ico-link" aria-hidden="true"></span><small>Leagă</small></button>
-    <button data-unealta="teren"><span class="ico ico-terrain" aria-hidden="true"></span><small>Teren</small></button>
-    <button id="btnPiese"><span class="ico ico-parts" aria-hidden="true"></span><small>Piese</small></button>
-    <button id="btnLume"><span class="ico ico-gear" aria-hidden="true"></span><small>Reglaje</small></button>
+  <nav id="bara" class="doar-tactil" aria-label="Tools">
+    <button data-unealta="muta"><span class="ico ico-move" aria-hidden="true"></span><small>Move</small></button>
+    <button data-unealta="leaga"><span class="ico ico-link" aria-hidden="true"></span><small>Connect</small></button>
+    <button data-unealta="teren"><span class="ico ico-terrain" aria-hidden="true"></span><small>Terrain</small></button>
+    <button id="btnPiese"><span class="ico ico-parts" aria-hidden="true"></span><small>Parts</small></button>
+    <button id="btnLume"><span class="ico ico-gear" aria-hidden="true"></span><small>Settings</small></button>
   </nav>
 
   <aside id="proprietati">
-    <button class="inchide doar-tactil">Închide</button>
+    <button class="inchide doar-tactil">Close</button>
     <div id="panou"></div>
     <section>
-      <h2>Lumea</h2>
-      <label class="camp">Gravitație
+      <h2>World</h2>
+      <label class="camp">Gravity
         <select id="gravitatie">
-          <option value="9.81">Pământ · 9,81 m/s²</option>
+          <option value="9.81">Earth · 9.81 m/s²</option>
           <option value="274">Soare · 274 m/s²</option>
-          <option value="1.62">Lună · 1,62 m/s²</option>
-          <option value="3.72">Marte · 3,72 m/s²</option>
+          <option value="1.62">Moon · 1.62 m/s²</option>
+          <option value="3.72">Mars · 3.72 m/s²</option>
           <option value="24.79">Jupiter · 24,79 m/s²</option>
           <option value="0">Zero · 0 m/s²</option>
         </select>
       </label>
-      <label class="camp">Frecarea terenului <output id="frecareTerenV"></output>
+      <label class="camp">Terrain friction <output id="frecareTerenV"></output>
         <input id="frecareTeren" type="range" min="0" max="2" step="0.05">
       </label>
-      <label class="camp">Volum sunete
+      <label class="camp">Sound volume
         <input id="volum" type="range" min="0" max="1" step="0.05">
       </label>
-      <label class="bifa"><input id="urmareste" type="checkbox" checked> Camera urmărește piesa selectată</label>
+      <label class="bifa"><input id="urmareste" type="checkbox" checked> Camera follows selected part</label>
     </section>
   </aside>
 </div>
